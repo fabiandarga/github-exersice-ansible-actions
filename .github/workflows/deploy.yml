@@ -10,7 +10,7 @@ jobs:
   deploy:
     name: Deploy Ansible Playbook
     if: github.event.pull_request.merged == true
-    runs-on: ubutnu-latest
+    runs-on: ubuntu-latest
     environment: production
     steps:
       - name: Checkout
