@@ -10,7 +10,7 @@ jobs:
   deploy:
     name: Deploy Ansible Playbook
     if: github.event.pull_request.merged == true
-    runs-on: ubutnu-latest
+    runs-on: ubuntu-latest
     environment: production
     steps:
       - name: Checkout
@@ -26,10 +26,13 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y ansible 
+      
+      - name: Setup sudo pw
+        run: echo "${{ secrets.SUDO_PW }}" > pass.txt
 
       - name: Run Ansible
         env:
           ANSIBLE_USER: ${{ secrets.ANSIBLE_USER }}
           ANSIBLE_HOST_KEY_CHECKING: False
         run: |
-          ansible-playbook -i inventory/hosts.ini playbooks/deply_web_server.yml --private-key private_key.pem -u "${{ secrets.ANSIBLE_USER }}"
+          ansible-playbook -i inventory/hosts.ini playbooks/deply_web_server.yml --private-key private_key.pem -u "${{ secrets.ANSIBLE_USER }}" --become-password-file pass.txt
