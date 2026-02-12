@@ -1,0 +1,11 @@
+name: Ansible File Test
+
+on:
+  pull_request:
+    branch: [master]
+
+jobs:
+  ansible-lint:
+    uses: ansible/ansible-content-actions/.github/workflows/ansible_lint.yaml@main
+    with:
+      args: '-p playbooks'
